@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Daily Attendance — Heavy Dark Theme</title>
+
+<!-- CSS FILE -->
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Daily Attendance</h1>
+  <div id="date"></div>
+
+  <div class="top">
+    <div class="left">
+      <div class="cards">
+        <div class="att-card present" id="presentCard">
+          <h3>Mark Present</h3>
+          <div class="big" id="presentPreview">—</div>
+        </div>
+
+        <div class="att-card absent" id="absentCard">
+          <h3>Mark Absent</h3>
+          <div class="big" id="absentPreview">—</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+
+        <tbody id="historyBody"></tbody>
+      </table>
+
+      <div id="emptyMsg" class="empty" style="display:none;">No attendance recorded yet.</div>
+    </div>
+
+    <div class="right">
+      <div class="stats">
+        <p>Present: <span id="presentCount">0</span></p>
+        <p>Absent: <span id="absentCount">0</span></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="exportBtn">Export CSV</button>
+        <button class="btn danger" id="clearBtn">Clear All</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JS FILE -->
+<script src="script.js"></script>
+
+</body>
+</html>
