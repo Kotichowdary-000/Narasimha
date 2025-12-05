@@ -1,65 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Daily Attendance — Heavy Dark Theme</title>
-
-<!-- CSS FILE -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Dashboard</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="card">
-  <h1>Daily Attendance</h1>
-  <div id="date"></div>
+<h1 class="title">Daily Attendance Dashboard</h1>
+<p id="date"></p>
 
-  <div class="top">
-    <div class="left">
-      <div class="cards">
-        <div class="att-card present" id="presentCard">
-          <h3>Mark Present</h3>
-          <div class="big" id="presentPreview">—</div>
-        </div>
+<div class="students">
 
-        <div class="att-card absent" id="absentCard">
-          <h3>Mark Absent</h3>
-          <div class="big" id="absentPreview">—</div>
-        </div>
-      </div>
+  <!-- STUDENT: NARASIMHA -->
+  <div class="student-card" id="narasimha">
+    <h2>Narasimha</h2>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-
-        <tbody id="historyBody"></tbody>
-      </table>
-
-      <div id="emptyMsg" class="empty" style="display:none;">No attendance recorded yet.</div>
+    <div class="action-buttons">
+      <button class="present-btn">Present</button>
+      <button class="absent-btn">Absent</button>
     </div>
 
-    <div class="right">
-      <div class="stats">
-        <p>Present: <span id="presentCount">0</span></p>
-        <p>Absent: <span id="absentCount">0</span></p>
-      </div>
-
-      <div class="actions">
-        <button class="btn" id="exportBtn">Export CSV</button>
-        <button class="btn danger" id="clearBtn">Clear All</button>
-      </div>
+    <div class="stats">
+      <div>Total Present: <span class="present-count">0</span></div>
+      <div>Total Absent: <span class="absent-count">0</span></div>
     </div>
+
+    <h3>History</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Status</th><th>Delete</th></tr>
+      </thead>
+      <tbody class="history-body"></tbody>
+    </table>
   </div>
+
+  <!-- STUDENT: ROHITH -->
+  <div class="student-card" id="rohith">
+    <h2>Rohith</h2>
+
+    <div class="action-buttons">
+      <button class="present-btn">Present</button>
+      <button class="absent-btn">Absent</button>
+    </div>
+
+    <div class="stats">
+      <div>Total Present: <span class="present-count">0</span></div>
+      <div>Total Absent: <span class="absent-count">0</span></div>
+    </div>
+
+    <h3>History</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Status</th><th>Delete</th></tr>
+      </thead>
+      <tbody class="history-body"></tbody>
+    </table>
+  </div>
+
+  <!-- STUDENT: GANESH -->
+  <div class="student-card" id="ganesh">
+    <h2>Ganesh</h2>
+
+    <div class="action-buttons">
+      <button class="present-btn">Present</button>
+      <button class="absent-btn">Absent</button>
+    </div>
+
+    <div class="stats">
+      <div>Total Present: <span class="present-count">0</span></div>
+      <div>Total Absent: <span class="absent-count">0</span></div>
+    </div>
+
+    <h3>History</h3>
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Status</th><th>Delete</th></tr>
+      </thead>
+      <tbody class="history-body"></tbody>
+    </table>
+  </div>
+
 </div>
 
-<!-- JS FILE -->
 <script src="script.js"></script>
-
 </body>
 </html>

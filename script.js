@@ -1,104 +1,73 @@
-const STORAGE = "attendanceHistory_v1";
+document.getElementById("date").textContent =
+  "Today: " + new Date().toLocaleDateString();
 
 function todayISO() {
   return new Date().toISOString().split("T")[0];
 }
 
-document.getElementById("date").innerText =
-  "Today: " + new Date().toLocaleDateString();
-
-let history = JSON.parse(localStorage.getItem(STORAGE)) || [];
-
-const historyBody = document.getElementById("historyBody");
-
-function updateCounts() {
-  const present = history.filter(h => h.status === "present").length;
-  const absent = history.filter(h => h.status === "absent").length;
-
-  document.getElementById("presentCount").innerText = present;
-  document.getElementById("absentCount").innerText = absent;
-
-  const today = todayISO();
-  const todayEntry = history.find(h => h.date === today);
-
-  document.getElementById("presentPreview").innerText =
-    todayEntry?.status === "present" ? "✓" : "—";
-
-  document.getElementById("absentPreview").innerText =
-    todayEntry?.status === "absent" ? "✓" : "—";
+function load(student) {
+  return JSON.parse(localStorage.getItem("att_" + student)) || [];
 }
 
-function renderHistory() {
-  historyBody.innerHTML = "";
-  const emptyMsg = document.getElementById("emptyMsg");
+function save(student, data) {
+  localStorage.setItem("att_" + student, JSON.stringify(data));
+}
 
-  if (history.length === 0) {
-    emptyMsg.style.display = "block";
-    return;
-  }
+function updateUI(card, history, student) {
+  card.querySelector(".present-count").textContent =
+    history.filter(x => x.status === "present").length;
 
-  emptyMsg.style.display = "none";
+  card.querySelector(".absent-count").textContent =
+    history.filter(x => x.status === "absent").length;
 
-  [...history].reverse().forEach(entry => {
+  const tbody = card.querySelector(".history-body");
+  tbody.innerHTML = "";
+
+  history.forEach((entry, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${entry.date}</td>
-      <td class="status">${entry.status}</td>
-      <td class="actions">
-        <button onclick="removeEntry('${entry.date}','${entry.status}')">Delete</button>
-      </td>
+      <td>${entry.status}</td>
+      <td><button class="delete-btn" data-id="${i}">X</button></td>
     `;
-    historyBody.appendChild(tr);
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.onclick = () => {
+      const index = btn.dataset.id;
+      history.splice(index, 1);
+      save(student, history);
+      updateUI(card, history, student);
+    };
   });
 }
 
-function removeEntry(date, status) {
-  history = history.filter(h => !(h.date === date && h.status === status));
-  localStorage.setItem(STORAGE, JSON.stringify(history));
-  renderHistory();
-  updateCounts();
-}
+document.querySelectorAll(".student-card").forEach(card => {
+  const student = card.id;
+  let history = load(student);
 
-function mark(status) {
-  const today = todayISO();
+  updateUI(card, history, student);
 
-  if (history.some(h => h.date === today)) {
-    alert("Attendance already marked today.");
-    return;
-  }
+  card.querySelector(".present-btn").onclick = () => {
+    const today = todayISO();
+    if (history.some(x => x.date === today)) {
+      alert("Already marked today!");
+      return;
+    }
+    history.push({ date: today, status: "present" });
+    save(student, history);
+    updateUI(card, history, student);
+  };
 
-  history.push({ date: today, status });
-  localStorage.setItem(STORAGE, JSON.stringify(history));
-
-  renderHistory();
-  updateCounts();
-  alert("Marked: " + status.toUpperCase());
-}
-
-document.getElementById("presentCard").onclick = () => mark("present");
-document.getElementById("absentCard").onclick = () => mark("absent");
-
-document.getElementById("clearBtn").onclick = () => {
-  if (!confirm("Clear entire history?")) return;
-  history = [];
-  localStorage.removeItem(STORAGE);
-  renderHistory();
-  updateCounts();
-};
-
-document.getElementById("exportBtn").onclick = () => {
-  if (history.length === 0) return alert("No data to export.");
-
-  let csv = "date,status\n";
-  history.forEach(entry => csv += `${entry.date},${entry.status}\n`);
-
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "attendance.csv";
-  a.click();
-};
-
-renderHistory();
-updateCounts();
+  card.querySelector(".absent-btn").onclick = () => {
+    const today = todayISO();
+    if (history.some(x => x.date === today)) {
+      alert("Already marked today!");
+      return;
+    }
+    history.push({ date: today, status: "absent" });
+    save(student, history);
+    updateUI(card, history, student);
+  };
+});
